@@ -1,4 +1,6 @@
 ﻿<?php
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+date_default_timezone_set('America/Sao_Paulo');
 session_start();
 include_once('login/protect.php');
 protect();
@@ -119,6 +121,19 @@ if (!isset($_SESSION['rodape'])) {
             <div class="form-group col-12">
               <label for="slcFilial">Filial</label>
               <select name="slcFilial" id="slcFilial" class="form-control">
+              </select>
+            </div>
+            <div class="form-group col-12">
+              <label for="slcCarteira">Carteira da parcela</label>
+              <select name="slcCarteira" id="slcCarteira" class="form-control">
+                <option value="">Todas</option>
+                <?php
+                $sql = 'SELECT cd_carteira, ds_carteira FROM tbl_financeiro_carteira WHERE x_ativo = 1 ORDER BY cd_carteira';
+                $consulta = odbc_exec($conexao, $sql);
+                while ($linha = odbc_fetch_array($consulta)) {
+                  echo '<option value="' . $linha['cd_carteira'] . '">' . $linha['cd_carteira'] . ' - ' . utf8_encode($linha['ds_carteira']) . '</option>';
+                }
+                ?>
               </select>
             </div>
             <div class="form-group col-12">
